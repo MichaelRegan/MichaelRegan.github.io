@@ -8,8 +8,6 @@ tags: [personal]
 
 # Patch Panel
 
-![Patch Panel](/assets/patch-panel.jpg)
-
 1. Modem out
 2. Router WAN
 4. LAN
