@@ -1,12 +1,15 @@
 ---
 title: Patch Panel
-date: 2023-05-19 12:15:00
+date: 2023-05-20 11:20:00
 categories: [Homelab, Network]
 tags: [personal]
 ---
 
-
 # Patch Panel
+
+![Patch Panel](/assets/patch-panel.jpg)
+
+/least-github-pages/
 
 1. Modem out
 2. Router WAN
