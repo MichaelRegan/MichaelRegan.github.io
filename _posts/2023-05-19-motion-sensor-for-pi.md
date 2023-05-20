@@ -1,9 +1,9 @@
 ---
 title: PIR Motion Sensor for Pi
-date: 2023-05-19
-categories: [iot, hardware, raspberrypi]
+date: 2023-05-19 12:15:00
+categories: [Projects, IOT]
+tags: [hardware, raspberrypi, wall display]
 ---
-
 
 
 # mrpir
