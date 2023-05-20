@@ -9,8 +9,6 @@ tags: [personal]
 
 ![Patch Panel](/assets/patch-panel.jpg)
 
-/least-github-pages/
-
 1. Modem out
 2. Router WAN
 4. LAN
