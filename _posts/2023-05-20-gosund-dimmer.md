@@ -7,9 +7,9 @@ tags: [lights, tasmota]
 
 # Configure Gosund Dimmer with Tasmota
 Plug in the module
-Start the flash tool on the raspberry PI (MRPiUtil)
+Start the flash tool on the raspberry PI
 ```sh
-ssh michael@MRPiUtil.mjsquared.net
+ssh michael@address.of.pi
 ```
 ## Flash the module
 * reconnect wifi to the tasmoto wifi
