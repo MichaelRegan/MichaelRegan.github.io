@@ -25,8 +25,14 @@ The following environment variables are used and should be stored in an ".env" f
 
 Make sure the python dependencies are installed. Also, using python env is recommended
 ``` sh
+    python -m venv ~/mrpir
+```
+Now move into the mrpir directory
+``` sh
+    cd ~/mrpir
     sudo pip3 install PyYAML paho-mqtt python-decouple sd-notify
 ```
+Don't forget to pull the latest from the repo
 <br>
 
 # Configure a raspberry pi as a KIOSK for Home Assistant
@@ -126,10 +132,11 @@ Link to the right direcotry for global system install
 ``` sh
 ln -s “$(pwd)/mrpir.service” /lib/systemd/system/mrpir.service
 ```
-Reload and enable the service for local user install
+Reload and enable the service for local user install. Also, allow the user account systemd instance to start without an active login with loginctl.
 ``` sh
 sudo systemctl --user daemon-reload
 sudo systemctl --user enable mrpir.service
+sudo loginctl enable-linger $USER
 ```
 Reload and enable the service for global system install
 ``` sh
