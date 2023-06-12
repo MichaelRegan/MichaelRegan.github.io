@@ -7,7 +7,7 @@ tags: [hardware, raspberrypi, wall display]
 
 
 # mrpir
-Python script to support a PIR sensor on SBC's and publish over MQTT with Home Assistant discovery support
+Python service to support a PIR sensor on SBC's and publish over MQTT with Home Assistant discovery support
 
 The following environment variables are used and should be stored in an ".env" file:
 
@@ -23,10 +23,10 @@ The following environment variables are used and should be stored in an ".env" f
     LOGGING_LEVEL=1
 
 
-make sure python dependencies are installed:
-
-    sudo pip3 install PyYAML paho-mqtt python-decouple
-
+Make sure the python dependencies are installed. Also, using python env is recommended
+``` sh
+    sudo pip3 install PyYAML paho-mqtt python-decouple sd-notify
+```
 <br>
 
 # Configure a raspberry pi as a KIOSK for Home Assistant
@@ -36,21 +36,24 @@ make sure python dependencies are installed:
     sudo crontab -e
     ```
     You can launch crontab without entering sudo, but if you do, you won’t be able to run scripts that require admin privileges. In fact, you get a different list of crontabs if you don’t use sudo so don’t forget to keep using it or not using it.
-2. Add a line at the end of the file that reads like this:
+2. Add a line at the end of the file that reads like this. Replace "pi" with your username
     ``` sh
     @reboot python3 /home/pi/startup.sh
     ```
 3. Create the file: /home/pi/startup.sh
 4. Run 
     ``` sh
-    nano startup.sh
+    nano ~/startup.sh
     ```
 5. Add two lines: 
     ``` sh
     echo "${usb_flag}" | sudo tee /sys/devices/platform/soc/3f980000.usb/buspower >/dev/null
     sudo tvservice --off
     ```
-6. make the startup file executable: sudo chmod a+x startup.sh
+6. make the startup file executable: 
+    ``` sh 
+    sudo chmod a+x ~/startup.sh
+    ```
 ## Remove the cursor on the PI screen
 ``` sh
 sudo sed -i -- "s/#xserver-command=X/xserver-command=X -nocursor/" /etc/lightdm/lightdm.conf
@@ -74,11 +77,11 @@ Exec=chromium-browser --noerrdialogs --disable-infobars --ignore-certificate-err
 
 ## Add xscreensaver
 ``` sh
-sudo apt-get update
+sudo apt update
 apt-cache search xscreensaver*
-sudo apt-get install xscreensaver*
+sudo apt install xscreensaver*
 ```
-Run from nvc or on machine, not ssh
+If you have issues with the service controlling the screen, Run from nvc or on machine, not ssh
 ``` sh
 xhost +local:pi (this will let the mrpir services interact with the screensaver)
 ```
@@ -89,9 +92,10 @@ xscreensaver-command -display ":0.0" -deactivate
 ```
 ## Start mrpir:
 ``` sh
-sudo nano /lib/systemd/system/mrpir.service
+sudo nano ~/.config/systemd/user/mrpir.service (for local user install)
+sudo nano /lib/systemd/system/mrpir.service (for global system install)
 ```
-Past in the followign:
+Past in the following (or just pull from the repo):
 ``` toml
 [Unit]
 Description=Presense sensor
@@ -114,14 +118,20 @@ WantedBy=multi-user.target
 ```
 Configure the service file with the right permissions
 ``` sh
-sudo chmod 644 /lib/systemd/system/mrpir.service
+sudo chmod 644 ~/.config/systemd/user/mrpir.service (for local user install)
+sudo chmod 644 /lib/systemd/system/mrpir.service (for global system install)
 ```
 
-Link to the right direcotry
+Link to the right direcotry for global system install
 ``` sh
 ln -s “$(pwd)/mrpir.service” /lib/systemd/system/mrpir.service
 ```
-Reload and enable the service
+Reload and enable the service for local user install
+``` sh
+sudo systemctl --user daemon-reload
+sudo systemctl --user enable mrpir.service
+```
+Reload and enable the service for global system install
 ``` sh
 sudo systemctl daemon-reload
 sudo systemctl enable mrpir.service
